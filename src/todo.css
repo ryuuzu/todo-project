@@ -27,6 +27,12 @@
 	overflow: hidden;
 }
 
+.todo-title .todo-check {
+	accent-color: var(--accent-color);
+	transform: scale(1.5);
+	margin-right: 10px;
+}
+
 .todo .todo-title .todo-title-text::selection {
 	background-color: inherit;
 	color: inherit;
@@ -78,9 +84,50 @@
 	transition: color 300ms ease-in-out, border-color 300ms ease-in-out;
 }
 
-.todo-edit-button, .todo-delete-button {
+.todo-edit-button,
+.todo-delete-button {
 	cursor: pointer;
 	width: 20px;
 	padding: 0;
 	margin: 0;
+}
+
+.todo-details {
+	position: absolute;
+	top: calc(50% - 30px - 20vh);
+	left: calc(50% - 20vw);
+	border-radius: 28px;
+	width: 40vw;
+	background-color: var(--light-primary-color);
+	z-index: 2;
+}
+
+.details-titlebar {
+	display: flex;
+	padding: 20px 40px;
+	height: 20px;
+	font-size: 20px;
+	border-top-left-radius: 28px;
+	border-top-right-radius: 28px;
+	align-items: center;
+	background-color: var(--dark-primary-color);
+	justify-content: space-between;
+}
+
+.details-titlebar > span {
+	font-weight: 600;
+}
+
+.details-close-button {
+	height: 1.5rem;
+	cursor: pointer;
+}
+
+.details-close-button:hover {
+	opacity: 0.75;
+	transition: opacity 300ms ease-in-out;
+}
+
+.todo-main-details {
+	height: 40vh;
 }

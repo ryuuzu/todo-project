@@ -30,3 +30,16 @@ body {
 	border-radius: 28px;
 	box-shadow: 0 0 5px 5px var(--divider-color);
 }
+
+.overlay {
+	display: none;
+	position: absolute;
+	z-index: 1;
+	background-color: rgba(0, 0, 0, 0.5);
+	height: 110%;
+	width: 100%;
+}
+
+.overlay.visible {
+	display: block;
+}

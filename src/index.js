@@ -15,6 +15,7 @@ todosList.addTodo(
 		"td-1",
 		"Learn React",
 		"Learn React from the LinkedIn Learning Page",
+		new Date(),
 		new Date("2022-09-8"),
 		2,
 		"Links: https://linkedinlearning.com",
@@ -27,6 +28,7 @@ todosList.addTodo(
 		"td-2",
 		"Go Shopping",
 		"Need new clothes for the summer",
+		new Date(),
 		new Date("2022-10-20"),
 		1,
 		"Solos Nepal has great windshielders",
@@ -39,6 +41,7 @@ todosList.addTodo(
 		"td-3",
 		"Get Money",
 		"Withdraw money from the ATM",
+		new Date(),
 		new Date("2023-09-01"),
 		1,
 		"Money is in the Nabil account",
@@ -87,3 +90,10 @@ contentDiv.appendChild(getHeader());
 contentDiv.appendChild(getMain());
 contentDiv.appendChild(getFooter());
 updateDOM(todosList);
+
+const overlay = document.createElement("div");
+overlay.classList.add("overlay");
+overlay.classList.add("visible");
+
+document.body.appendChild(overlay);
+document.body.appendChild(todosList.todos[2].detailsHTML);

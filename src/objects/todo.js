@@ -1,12 +1,49 @@
+import closeIcon from "../close-icon.png";
 export default class Todo {
-	constructor(id, title, description, dueDate, priority, note, status) {
+	constructor(
+		id,
+		title,
+		description,
+		created,
+		dueDate,
+		priority,
+		note,
+		status
+	) {
 		this._id = id;
 		this._title = title;
 		this._description = description;
+		this._created = created;
 		this._dueDate = dueDate;
 		this._priority = priority;
 		this._note = note;
 		this._status = status;
+	}
+
+	get detailsHTML() {
+		const detailsDiv = document.createElement("div");
+		detailsDiv.classList.add("todo-details");
+		detailsDiv.setAttribute("id", this._id);
+
+		const titleBar = document.createElement("div");
+		titleBar.classList.add("details-titlebar");
+
+		const todoTitle = document.createElement("span");
+		todoTitle.textContent = this._title;
+		titleBar.appendChild(todoTitle);
+
+		const closeButton = new Image();
+		closeButton.src = closeIcon;
+		closeButton.classList.add('details-close-button')
+		titleBar.appendChild(closeButton);
+
+		const todoMain = document.createElement("div");
+		todoMain.classList.add('todo-main-details')
+
+		detailsDiv.appendChild(titleBar);
+		detailsDiv.appendChild(todoMain);
+
+		return detailsDiv;
 	}
 
 	get id() {
@@ -15,6 +52,10 @@ export default class Todo {
 
 	get status() {
 		return this._status;
+	}
+
+	get created() {
+		return this._created;
 	}
 
 	updateStatus() {
