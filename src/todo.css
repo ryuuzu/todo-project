@@ -1,0 +1,86 @@
+.todos-holder {
+	margin: 50px 80px;
+	color: var(--primary-text);
+}
+
+.todo {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 30px 40px;
+	background-color: white;
+	outline: 1px solid var(--divider-color);
+	border-left: 5px solid var(--priority-color);
+}
+
+.todo-title {
+	font-weight: 600;
+	font-size: px;
+	display: flex;
+	cursor: pointer;
+}
+
+.todo .todo-title .todo-title-text {
+	display: block;
+	position: relative;
+	padding: 0.2em 0;
+	overflow: hidden;
+}
+
+.todo .todo-title .todo-title-text::selection {
+	background-color: inherit;
+	color: inherit;
+}
+
+.todo .todo-title .todo-title-text::after {
+	content: "";
+	position: absolute;
+	top: 53%;
+	left: 0;
+	width: 100%;
+	height: 2px;
+	background-color: black;
+	transition: transform 300ms;
+	transform: translate3d(-100%, 0, 0);
+}
+
+.todo.completed .todo-title .todo-title-text::after {
+	transform: translate3d(0, 0, 0);
+}
+
+.todo-interaction-buttons {
+	display: flex;
+	align-items: center;
+	gap: 25px;
+	justify-content: space-between;
+}
+
+.todo-due {
+	text-align: right;
+	width: 6rem;
+}
+
+.todo-details-button {
+	width: 100px;
+	color: var(--primary-color);
+	font-family: inherit;
+	font-weight: 600;
+	background-color: white;
+	border: 2px solid var(--primary-color);
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.todo-details-button:hover {
+	color: var(--accent-color);
+	border-color: var(--accent-color);
+	transition: color 300ms ease-in-out, border-color 300ms ease-in-out;
+}
+
+.todo-edit-button, .todo-delete-button {
+	cursor: pointer;
+	width: 20px;
+	padding: 0;
+	margin: 0;
+}

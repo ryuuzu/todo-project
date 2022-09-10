@@ -1,0 +1,18 @@
+main {
+	height: 60vh;
+	background-color: var(--light-primary-color);
+	overflow-y: auto;
+}
+main::-webkit-scrollbar {
+	width: 1em;
+}
+
+main::-webkit-scrollbar-track {
+	box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+main::-webkit-scrollbar-thumb {
+	background-color: var(--primary-color);
+	border-radius: 28px;
+	outline: 1px solid slategrey;
+}

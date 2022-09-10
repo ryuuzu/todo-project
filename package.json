@@ -12,6 +12,7 @@
 	"author": "Utsav Gurmachhan Magar <utsavmagar88728@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
+		"date-fns": "^2.29.2",
 		"webpack": "^5.74.0",
 		"webpack-cli": "^4.10.0"
 	},
