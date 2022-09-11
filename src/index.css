@@ -35,8 +35,10 @@ body {
 	display: none;
 	position: absolute;
 	z-index: 1;
+	top: 0;
+	left: 0;
 	background-color: rgba(0, 0, 0, 0.5);
-	height: 110%;
+	height: 100%;
 	width: 100%;
 }
 

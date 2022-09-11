@@ -106,7 +106,6 @@
 	display: flex;
 	padding: 20px 40px;
 	height: 20px;
-	font-size: 20px;
 	border-top-left-radius: 28px;
 	border-top-right-radius: 28px;
 	align-items: center;
@@ -114,8 +113,22 @@
 	justify-content: space-between;
 }
 
-.details-titlebar > span {
+.details-titlebar > div > input {
+	font-family: inherit;
+	background-color: rgba(0, 0, 0, 0);
+	color: white;
+	border: none;
+	font-size: 20px;
 	font-weight: 600;
+	transition: width 5ms ease-in-out;
+}
+
+.details-titlebar > div > input:enabled {
+	border-bottom: 2px solid white;
+}
+
+.details-titlebar > div > input:focus {
+	outline: none;
 }
 
 .details-close-button {
@@ -130,4 +143,15 @@
 
 .todo-main-details {
 	height: 40vh;
+}
+
+.todo-title-things {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.svg-white {
+	filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(320deg)
+		brightness(103%) contrast(101%);
 }

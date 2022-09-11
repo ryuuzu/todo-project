@@ -1,4 +1,7 @@
 import closeIcon from "../close-icon.png";
+import getTextWidth from "./canvas_methods";
+
+const domParser = new DOMParser();
 export default class Todo {
 	constructor(
 		id,
@@ -28,17 +31,62 @@ export default class Todo {
 		const titleBar = document.createElement("div");
 		titleBar.classList.add("details-titlebar");
 
-		const todoTitle = document.createElement("span");
-		todoTitle.textContent = this._title;
-		titleBar.appendChild(todoTitle);
+		const todoTitleThings = document.createElement("div");
+		todoTitleThings.classList.add("todo-title-things");
+
+		const todoTitle = document.createElement("input");
+		todoTitle.setAttribute("id", "todo-title");
+		todoTitle.value = this._title;
+		todoTitle.disabled = true;
+		todoTitle.style.width = `${getTextWidth(
+			todoTitle.value,
+			"600 20px Barlow"
+		)}px`;
+
+		todoTitle.addEventListener("keydown", (e) => {
+			if (e.key === "Enter") {
+				todoTitle.disabled = true;
+			}
+		});
+
+		todoTitle.addEventListener("keyup", (e) => {
+			const titleBarDiff =
+				titleBar.clientWidth -
+				getTextWidth(todoTitle.value, "600 20px Barlow");
+			if (titleBarDiff < 100) {
+				return;
+			}
+			todoTitle.style.width = `${getTextWidth(
+				todoTitle.value,
+				"600 20px Barlow"
+			)}px`;
+		});
+
+		todoTitleThings.appendChild(todoTitle);
+
+		const svgEditButton = domParser
+			.parseFromString(
+				`<?xml version="1.0" ?><svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="m16 2.012 3 3L16.713 7.3l-3-3zM4 14v3h3l8.299-8.287-3-3zm0 6h16v2H4z"/></svg>`,
+				"image/svg+xml"
+			)
+			.querySelector("svg");
+
+		svgEditButton.addEventListener("click", (e) => {
+			todoTitle.disabled = false;
+			todoTitle.focus();
+		});
+		svgEditButton.classList.add("svg-white");
+		todoTitleThings.appendChild(svgEditButton);
+
+		titleBar.appendChild(todoTitleThings);
 
 		const closeButton = new Image();
 		closeButton.src = closeIcon;
-		closeButton.classList.add('details-close-button')
+		closeButton.classList.add("details-close-button");
 		titleBar.appendChild(closeButton);
 
 		const todoMain = document.createElement("div");
-		todoMain.classList.add('todo-main-details')
+		todoMain.classList.add("todo-main-details");
 
 		detailsDiv.appendChild(titleBar);
 		detailsDiv.appendChild(todoMain);
