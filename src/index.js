@@ -9,6 +9,10 @@ import ToDoList from "./objects/todoList";
 
 const contentDiv = document.querySelector(".root-content");
 
+const overlay = document.createElement("div");
+overlay.classList.add("overlay");
+overlay.classList.add("visible");
+
 const todosList = new ToDoList();
 todosList.addTodo(
 	new Todo(
@@ -68,6 +72,17 @@ function addEventListeners() {
 			checkCompletedTodos();
 		});
 	});
+
+	const todoDetailsButtons = document.querySelectorAll(
+		"#todo-details-button"
+	);
+	console.log(todoDetailsButtons);
+	todoDetailsButtons.forEach((todoDetailsButton) => {
+		todoDetailsButton.addEventListener("click", (e) => {
+			const todoID = todoDetailsButton.parentElement.parentElement.id;
+			addDetailsPage(todoID);
+		});
+	});
 }
 
 function checkCompletedTodos() {
@@ -91,9 +106,21 @@ contentDiv.appendChild(getMain());
 contentDiv.appendChild(getFooter());
 updateDOM(todosList);
 
-const overlay = document.createElement("div");
-overlay.classList.add("overlay");
-overlay.classList.add("visible");
+function addDetailsPage(todoID) {
+	document.body.appendChild(overlay);
+	document.body.appendChild(todosList.getTodo(todoID).detailsHTML);
+	addDetailsEventListener();
+}
 
-document.body.appendChild(overlay);
-document.body.appendChild(todosList.todos[2].detailsHTML);
+function addDetailsEventListener() {
+	const todoDetails = document.querySelector(".todo-details");
+	const todoDetailsCloseButton = todoDetails.querySelector("#close-button");
+	todoDetailsCloseButton.addEventListener("click", (e) => {
+		removeDetailsPage();
+	});
+}
+
+function removeDetailsPage() {
+	document.body.removeChild(document.querySelector(".overlay"));
+	document.body.removeChild(document.querySelector(".todo-details"));
+}

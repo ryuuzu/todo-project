@@ -94,7 +94,7 @@
 
 .todo-details {
 	position: absolute;
-	top: calc(50% - 30px - 20vh);
+	top: calc(50% - 30px - 25vh);
 	left: calc(50% - 20vw);
 	border-radius: 28px;
 	width: 40vw;
@@ -113,7 +113,7 @@
 	justify-content: space-between;
 }
 
-.details-titlebar > div > input {
+.details-titlebar > input {
 	font-family: inherit;
 	background-color: rgba(0, 0, 0, 0);
 	color: white;
@@ -123,35 +123,184 @@
 	transition: width 5ms ease-in-out;
 }
 
-.details-titlebar > div > input:enabled {
+.details-titlebar > input:enabled {
 	border-bottom: 2px solid white;
 }
 
-.details-titlebar > div > input:focus {
+.details-titlebar > input:focus {
 	outline: none;
 }
 
-.details-close-button {
-	height: 1.5rem;
-	cursor: pointer;
+.details-close-button,
+.save-button {
+	height: 24px;
 }
 
-.details-close-button:hover {
-	opacity: 0.75;
+.details-close-button:hover,
+.save-button:hover,
+.edit-button:hover {
+	opacity: 0.6;
 	transition: opacity 300ms ease-in-out;
 }
 
-.todo-main-details {
-	height: 40vh;
-}
-
-.todo-title-things {
+.todo-details-buttons {
 	display: flex;
 	align-items: center;
 	gap: 10px;
 }
 
+.todo-details-buttons.save-mode .save-button {
+	display: none;
+}
+
+.todo-details-buttons.save-mode .edit-button {
+	display: block;
+}
+
+.todo-details-buttons.edit-mode .save-button {
+	display: block;
+}
+
+.todo-details-buttons.edit-mode .edit-button {
+	display: none;
+}
+
+.todo-details-buttons > * {
+	cursor: pointer;
+}
+
 .svg-white {
 	filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(320deg)
 		brightness(103%) contrast(101%);
+}
+
+.todo-main-details {
+	height: 50vh;
+	color: var(--primary-text);
+	padding: 10px 20px;
+}
+
+.todo-creation-details {
+	font-size: 12px;
+	color: var(--secondary-text);
+}
+
+.todo-creation-details > .creation-date {
+	color: var(--primary-text);
+}
+
+.todo-other-details {
+	margin-top: 20px;
+	display: grid;
+	grid-template-columns: 5fr 2fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	gap: 20px;
+	grid-template-areas:
+		"description duedate"
+		"description priority"
+		"note status";
+}
+
+.todo-other-details > div {
+	display: flex;
+	flex-direction: column;
+}
+
+.todo-other-details textarea {
+	background-color: rgba(0, 0, 0, 0);
+	font-family: inherit;
+	font-size: 17px;
+	padding: 5px 10px;
+	height: 100%;
+	resize: none;
+}
+
+.todo-other-details textarea:disabled {
+	background-color: inherit;
+	color: inherit;
+	border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.todo-other-details > div:nth-child(1) {
+	grid-area: description;
+}
+
+.todo-other-details > div:nth-child(2) {
+	grid-area: duedate;
+}
+
+.todo-other-details > div:nth-child(3) {
+	grid-area: note;
+}
+
+.todo-other-details > div:nth-child(4) {
+	grid-area: priority;
+}
+
+.todo-other-details > div:nth-child(5) {
+	grid-area: status;
+}
+
+.todo-details-duedate {
+	font-family: inherit;
+	color: inherit;
+	font-size: 15px;
+	background-color: inherit;
+	border: 1px solid rgba(0, 0, 0, 0.75);
+	padding: 2px 5px;
+}
+
+.todo-details-duedate:disabled {
+	border: 1px solid rgba(0, 0, 0, 0);
+	opacity: 1;
+}
+
+.todo-details-priority {
+	font-family: inherit;
+	font-size: 18px;
+	color: inherit;
+	background-color: inherit;
+	border: none;
+	outline: 1px solid rgba(0, 0, 0, 0.75);
+	padding: 2px 5px;
+}
+
+.todo-details-priority:disabled {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-indent: 1px;
+	text-overflow: "";
+	padding: 3px 8px;
+	opacity: 1;
+	outline: none;
+}
+
+.todo-other-details > div > label {
+	font-size: 20px;
+	font-weight: 600;
+	padding-bottom: 2px;
+	margin-bottom: 8px;
+	border-bottom: 2px solid var(--divider-color);
+}
+
+.todo-status-button {
+	background-color: rgba(0, 0, 0, 0);
+	font-family: inherit;
+	margin-top: 20px;
+	padding: 10px;
+	font-size: 18px;
+	font-weight: 500;
+	border: none;
+	border-radius: 28px;
+	box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.5),
+		5px 5px 10px rgba(255, 255, 255, 0.5);
+	transition: box-shadow 300ms ease-in-out;
+}
+
+.todo-status-button:hover {
+	color: var(--accent-color);
+	box-shadow: -1px -1px 10px rgba(0, 0, 0, 0.5),
+		1px 1px 10px rgba(255, 255, 255, 0.5),
+		inset -3px -3px 10px rgba(0, 0, 0, 0.5),
+		inset 3px 3px 10px rgba(255, 255, 255, 0.5);
 }
