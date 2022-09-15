@@ -70,6 +70,7 @@ export default class Todo {
 
 		const saveButton = new Image();
 		saveButton.src = saveIcon;
+		saveButton.setAttribute("id", "details-save-button");
 
 		svgEditButton.classList.add("svg-white");
 		svgEditButton.classList.add("edit-button");

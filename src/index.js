@@ -76,11 +76,20 @@ function addEventListeners() {
 	const todoDetailsButtons = document.querySelectorAll(
 		"#todo-details-button"
 	);
-	console.log(todoDetailsButtons);
 	todoDetailsButtons.forEach((todoDetailsButton) => {
 		todoDetailsButton.addEventListener("click", (e) => {
 			const todoID = todoDetailsButton.parentElement.parentElement.id;
 			addDetailsPage(todoID);
+		});
+	});
+
+	const todoDeleteButtons = document.querySelectorAll("#todo-delete-button");
+	todoDeleteButtons.forEach((todoDeleteButton) => {
+		todoDeleteButton.addEventListener("click", (e) => {
+			const todoDiv = todoDeleteButton.parentElement.parentElement;
+			const todoID = todoDiv.id;
+			todosList.removeTodo(todoID);
+			updateDOM();
 		});
 	});
 }
@@ -117,6 +126,35 @@ function addDetailsEventListener() {
 	const todoDetailsCloseButton = todoDetails.querySelector("#close-button");
 	todoDetailsCloseButton.addEventListener("click", (e) => {
 		removeDetailsPage();
+		updateDOM();
+	});
+	const todoDetailsSaveButton = todoDetails.querySelector(
+		"#details-save-button"
+	);
+	todoDetailsSaveButton.addEventListener("click", (e) => {
+		const todoID = todoDetails.getAttribute("id");
+		const titleValue = todoDetails.querySelector("#todo-title").value;
+		const descriptionValue =
+			todoDetails.querySelector("#description").value;
+		const dueDateValue = new Date(
+			todoDetails.querySelector("#duedate").value
+		);
+		const noteValue = todoDetails.querySelector("#note").value;
+		const priorityValue = parseInt(
+			todoDetails.querySelector("#priority").value
+		);
+		const statusValue =
+			todoDetails.querySelector("#status").getAttribute("value") ===
+			"true";
+		todosList.updateTodo(
+			todoID,
+			titleValue,
+			descriptionValue,
+			dueDateValue,
+			priorityValue,
+			noteValue,
+			statusValue
+		);
 	});
 }
 
