@@ -2,10 +2,12 @@ import "./index.css";
 import "./todo.css";
 import Todo from "./objects/todo";
 import getMain from "./main/main";
-import getTodosHTMl from "./updateDOM";
+import { getTodosHTMl, getProjectsHTML } from "./updateDOM";
 import getHeader from "./header/header";
 import getFooter from "./footer/footer";
 import ToDoList from "./objects/todoList";
+import ProjectList from "./objects/projectList";
+import Project from "./objects/project";
 
 const contentDiv = document.querySelector(".root-content");
 
@@ -13,8 +15,11 @@ const overlay = document.createElement("div");
 overlay.classList.add("overlay");
 overlay.classList.add("visible");
 
-const todosList = new ToDoList();
-todosList.addTodo(
+let activePage = "PROJECTS";
+
+const data = { todos: new ToDoList(), projects: new ProjectList() };
+
+data.todos.addTodo(
 	new Todo(
 		"td-1",
 		"Learn React",
@@ -27,7 +32,7 @@ todosList.addTodo(
 	)
 );
 
-todosList.addTodo(
+data.todos.addTodo(
 	new Todo(
 		"td-2",
 		"Go Shopping",
@@ -40,7 +45,7 @@ todosList.addTodo(
 	)
 );
 
-todosList.addTodo(
+data.todos.addTodo(
 	new Todo(
 		"td-3",
 		"Get Money",
@@ -53,22 +58,111 @@ todosList.addTodo(
 	)
 );
 
+const project = new Project("pj-1", "The Odin Project");
+
+project.addTodo(
+	new Todo(
+		"td-1",
+		"Learn React",
+		"Learn React from the LinkedIn Learning Page",
+		new Date(),
+		new Date("2022-09-8"),
+		2,
+		"Links: https://linkedinlearning.com",
+		false
+	)
+);
+
+project.addTodo(
+	new Todo(
+		"td-2",
+		"Go Shopping",
+		"Need new clothes for the summer",
+		new Date(),
+		new Date("2022-10-20"),
+		1,
+		"Solos Nepal has great windshielders",
+		false
+	)
+);
+
+project.addTodo(
+	new Todo(
+		"td-3",
+		"Get Money",
+		"Withdraw money from the ATM",
+		new Date(),
+		new Date("2023-09-01"),
+		1,
+		"Money is in the Nabil account",
+		true
+	)
+);
+
+const project2 = new Project("pj-2", "The Odin Project2");
+
+project2.addTodo(
+	new Todo(
+		"td-1",
+		"Learn React",
+		"Learn React from the LinkedIn Learning Page",
+		new Date(),
+		new Date("2022-09-8"),
+		2,
+		"Links: https://linkedinlearning.com",
+		false
+	)
+);
+
+project2.addTodo(
+	new Todo(
+		"td-2",
+		"Go Shopping",
+		"Need new clothes for the summer",
+		new Date(),
+		new Date("2022-10-20"),
+		1,
+		"Solos Nepal has great windshielders",
+		false
+	)
+);
+
+project2.addTodo(
+	new Todo(
+		"td-3",
+		"Get Money",
+		"Withdraw money from the ATM",
+		new Date(),
+		new Date("2023-09-01"),
+		1,
+		"Money is in the Nabil account",
+		true
+	)
+);
+
+data.projects.addProject(project);
+data.projects.addProject(project2);
+
 function updateDOM() {
 	const main = document.querySelector("main");
 	const oldTodosHolder = main.querySelector(".todos-holder");
 	main.removeChild(oldTodosHolder);
-	main.appendChild(getTodosHTMl(todosList.todos));
+	if (activePage === "HOME") {
+		main.appendChild(getTodosHTMl(data.todos.todos));
+	} else if (activePage === "PROJECTS") {
+		main.appendChild(getProjectsHTML(data.projects.projects));
+	}
 	checkCompletedTodos();
-	addEventListeners();
+	addTodoEventListeners();
 }
 
-function addEventListeners() {
+function addTodoEventListeners() {
 	const todoTitles = document.querySelectorAll(".todo-title");
 	todoTitles.forEach((todoTitle) => {
 		const todoContainer = todoTitle.parentElement;
 		const todoID = todoContainer.id;
 		todoTitle.addEventListener("click", (e) => {
-			todosList.updateTodoStatus(todoID);
+			data.todos.updateTodoStatus(todoID);
 			checkCompletedTodos();
 		});
 	});
@@ -89,7 +183,7 @@ function addEventListeners() {
 			const todoDiv =
 				todoDeleteButton.parentElement.parentElement.parentElement;
 			const todoID = todoDiv.id;
-			todosList.removeTodo(todoID);
+			data.todos.removeTodo(todoID);
 			todoDiv.classList.add("removed");
 			console.log(todoDiv);
 			setTimeout(updateDOM, 200);
@@ -101,7 +195,7 @@ function checkCompletedTodos() {
 	const checkBoxes = document.querySelectorAll(".todo-check");
 	checkBoxes.forEach((checkBox) => {
 		const todoContainer = checkBox.parentElement.parentElement;
-		const linkedTodo = todosList.getTodo(todoContainer.id);
+		const linkedTodo = data.todos.getTodo(todoContainer.id);
 		if (!linkedTodo.status) {
 			checkBox.checked = false;
 			todoContainer.classList.remove("completed");
@@ -116,11 +210,11 @@ function checkCompletedTodos() {
 contentDiv.appendChild(getHeader());
 contentDiv.appendChild(getMain());
 contentDiv.appendChild(getFooter());
-updateDOM(todosList);
+updateDOM(data.todos);
 
 function addDetailsPage(todoID) {
 	document.body.appendChild(overlay);
-	document.body.appendChild(todosList.getTodo(todoID).detailsHTML);
+	document.body.appendChild(data.todos.getTodo(todoID).detailsHTML);
 	addDetailsEventListener();
 }
 
@@ -149,7 +243,7 @@ function addDetailsEventListener() {
 		const statusValue =
 			todoDetails.querySelector("#status").getAttribute("value") ===
 			"true";
-		todosList.updateTodo(
+		data.todos.updateTodo(
 			todoID,
 			titleValue,
 			descriptionValue,
@@ -165,3 +259,13 @@ function removeDetailsPage() {
 	document.body.removeChild(document.querySelector(".overlay"));
 	document.body.removeChild(document.querySelector(".todo-details"));
 }
+
+document.querySelector(".nav-link.home").addEventListener("click", (e) => {
+	activePage = "HOME";
+	updateDOM();
+});
+
+document.querySelector(".nav-link.projects").addEventListener("click", (e) => {
+	activePage = "PROJECTS";
+	updateDOM();
+});

@@ -1,0 +1,15 @@
+.project {
+	padding-bottom: 25px;
+	margin-block: 25px;
+	border-bottom: 1px solid var(--divider-color);
+}
+
+.project-header {
+	padding: 10px 20px;
+}
+
+.project-title {
+	font-size: 30px;
+	font-weight: 600;
+	text-decoration: underline;
+}

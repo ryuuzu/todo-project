@@ -24,11 +24,13 @@ function getNavigationLinks() {
 	homeNavLink.textContent = "Home";
 	navLinks.appendChild(homeNavLink);
 	homeNavLink.classList.add("nav-link");
+	homeNavLink.classList.add("home");
 
 	const projectsNavLink = document.createElement("li");
 	projectsNavLink.textContent = "Projects";
 	navLinks.appendChild(projectsNavLink);
 	projectsNavLink.classList.add("nav-link");
+	projectsNavLink.classList.add("projects");
 
 	return navLinks;
 }

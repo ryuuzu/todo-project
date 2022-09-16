@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import closeIcon from "../close-icon.png";
 import saveIcon from "../save-icon.png";
+import { formatDistanceToNowStrict } from "date-fns";
 import getTextWidth from "./canvas_methods";
 
 const domParser = new DOMParser();
@@ -246,6 +247,66 @@ export default class Todo {
 		});
 
 		return detailsDiv;
+	}
+
+	get displayHTML() {
+		const todoPriorityColors = {
+			1: "#fa4a4a",
+			2: "#ffa500",
+			3: "#4aa24a",
+		};
+		const todoContainer = document.createElement("div");
+		todoContainer.classList.add("todo");
+		todoContainer.setAttribute("id", this.id);
+		todoContainer.style.setProperty(
+			"--priority-color",
+			todoPriorityColors[this.priority]
+		);
+
+		const todoTitle = document.createElement("div");
+		todoTitle.classList.add("todo-title");
+
+		const todoCheckBox = document.createElement("input");
+		todoCheckBox.type = "checkbox";
+		todoCheckBox.classList.add("todo-check");
+		todoTitle.appendChild(todoCheckBox);
+
+		const todoTitleText = document.createElement("span");
+		todoTitleText.classList.add("todo-title-text");
+		todoTitleText.textContent = this.title;
+		todoTitle.appendChild(todoTitleText);
+
+		todoContainer.appendChild(todoTitle);
+
+		const todoDescription = document.createElement("div");
+		todoDescription.classList.add("todo-description");
+		todoDescription.textContent = this.desc;
+		// todoContainer.appendChild(todoDescription);
+
+		const todoButtonsHolder = document.createElement("div");
+		todoButtonsHolder.classList.add("todo-interaction-buttons");
+
+		const todoDetailsButton = document.createElement("button");
+		todoDetailsButton.textContent = "DETAILS";
+		todoDetailsButton.classList.add("todo-details-button");
+		todoDetailsButton.setAttribute("id", "todo-details-button");
+		todoButtonsHolder.appendChild(todoDetailsButton);
+
+		const todoDueDate = document.createElement("div");
+		todoDueDate.classList.add("todo-due");
+		todoDueDate.textContent = formatDistanceToNowStrict(this.due, {
+			addSuffix: true,
+		});
+		todoButtonsHolder.appendChild(todoDueDate);
+
+		const todoDeleteButton = document.createElement("div");
+		todoDeleteButton.innerHTML = `<?xml version="1.0" ?><svg id="todo-delete-button" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:#232323;}</style></defs><path class="cls-1" d="M13,0H11A3,3,0,0,0,8,3V4H2A1,1,0,0,0,2,6H3V20a4,4,0,0,0,4,4H17a4,4,0,0,0,4-4V6h1a1,1,0,0,0,0-2H16V3A3,3,0,0,0,13,0ZM10,3a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V4H10Zm9,17a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6H19Z"/><path class="cls-1" d="M12,9a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V10A1,1,0,0,0,12,9Z"/><path class="cls-1" d="M15,18a1,1,0,0,0,2,0V10a1,1,0,0,0-2,0Z"/><path class="cls-1" d="M8,9a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V10A1,1,0,0,0,8,9Z"/></svg>`;
+		todoDeleteButton.classList.add("todo-delete-button");
+		todoButtonsHolder.appendChild(todoDeleteButton);
+
+		todoContainer.appendChild(todoButtonsHolder);
+
+		return todoContainer;
 	}
 
 	get id() {
