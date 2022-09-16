@@ -14,7 +14,6 @@ function getProjectsHTML(projects) {
 	projectsHolder.classList.add("todos-holder");
 
 	projects.forEach((project) => {
-		console.log(project);
 		projectsHolder.appendChild(project.displayHTML);
 	});
 

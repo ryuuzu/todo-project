@@ -17,7 +17,7 @@ export default class ToDoList {
 	updateTodoStatus(todoID) {
 		const updatedTodo = this.getTodo(todoID);
 		updatedTodo.updateStatus();
-		this.#updateTodo(updatedTodo);
+		this.#replaceTodo(updatedTodo);
 	}
 
 	updateTodo(todoID, title, description, dueDate, priority, note, status) {
@@ -48,7 +48,7 @@ export default class ToDoList {
 		return this._todos.findIndex((todo) => todo.id === todoID);
 	}
 
-	#updateTodo(todo) {
-		this._todos[this.#getTodoIndex(todo.todoID)] = todo;
+	#replaceTodo(todo) {
+		this._todos[this.#getTodoIndex(todo.id)] = todo;
 	}
 }

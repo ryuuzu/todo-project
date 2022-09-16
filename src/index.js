@@ -149,11 +149,40 @@ function updateDOM() {
 	main.removeChild(oldTodosHolder);
 	if (activePage === "HOME") {
 		main.appendChild(getTodosHTMl(data.todos.todos));
+		addTodoEventListeners();
+		checkCompletedTodos();
 	} else if (activePage === "PROJECTS") {
 		main.appendChild(getProjectsHTML(data.projects.projects));
+		addProjectEventListeners();
+		checkCompletedProjectTodos();
 	}
-	checkCompletedTodos();
-	addTodoEventListeners();
+}
+
+function addProjectEventListeners() {
+	const todoTitles = document.querySelectorAll(".todo-title");
+	todoTitles.forEach((todoTitle) => {
+		const todoContainer = todoTitle.parentElement;
+		const todoID = todoContainer.id;
+		const projectContainer = todoContainer.parentElement.parentElement;
+		const projectID = projectContainer.id;
+		todoTitle.addEventListener("click", (e) => {
+			data.projects.updateProjectTodo(projectID, todoID);
+			checkCompletedProjectTodos();
+		});
+	});
+
+	const todoDeleteButtons = document.querySelectorAll("#todo-delete-button");
+	todoDeleteButtons.forEach((todoDeleteButton) => {
+		todoDeleteButton.addEventListener("click", (e) => {
+			const todoContainer =
+				todoDeleteButton.parentElement.parentElement.parentElement;
+			const todoID = todoContainer.id;
+			const projectContainer = todoContainer.parentElement.parentElement;
+			data.projects.removeProjectTodo(projectContainer.id, todoID);
+			todoContainer.classList.add("removed");
+			setTimeout(updateDOM, 200);
+		});
+	});
 }
 
 function addTodoEventListeners() {
@@ -185,9 +214,28 @@ function addTodoEventListeners() {
 			const todoID = todoDiv.id;
 			data.todos.removeTodo(todoID);
 			todoDiv.classList.add("removed");
-			console.log(todoDiv);
 			setTimeout(updateDOM, 200);
 		});
+	});
+}
+
+function checkCompletedProjectTodos() {
+	const checkBoxes = document.querySelectorAll(".todo-check");
+	checkBoxes.forEach((checkBox) => {
+		const todoContainer = checkBox.parentElement.parentElement;
+		const projectContainer = todoContainer.parentElement.parentElement;
+		const linkedTodo = data.projects.getProjectTodo(
+			projectContainer.id,
+			todoContainer.id
+		);
+		if (!linkedTodo.status) {
+			checkBox.checked = false;
+			todoContainer.classList.remove("completed");
+		}
+		if (linkedTodo.status) {
+			checkBox.checked = true;
+			todoContainer.classList.add("completed");
+		}
 	});
 }
 
