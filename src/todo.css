@@ -13,6 +13,22 @@
 	border-left: 5px solid var(--priority-color);
 }
 
+@keyframes removeTodo {
+	0% {
+		position: absolute;
+		right: 0%;
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		right: -100%;
+	}
+}
+.todo.removed {
+	animation: 1s 1 normal removeTodo;
+	animation-fill-mode: forwards;
+}
+
 .todo-title {
 	font-weight: 600;
 	font-size: px;

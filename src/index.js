@@ -86,10 +86,13 @@ function addEventListeners() {
 	const todoDeleteButtons = document.querySelectorAll("#todo-delete-button");
 	todoDeleteButtons.forEach((todoDeleteButton) => {
 		todoDeleteButton.addEventListener("click", (e) => {
-			const todoDiv = todoDeleteButton.parentElement.parentElement;
+			const todoDiv =
+				todoDeleteButton.parentElement.parentElement.parentElement;
 			const todoID = todoDiv.id;
 			todosList.removeTodo(todoID);
-			updateDOM();
+			todoDiv.classList.add("removed");
+			console.log(todoDiv);
+			setTimeout(updateDOM, 200);
 		});
 	});
 }
