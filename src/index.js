@@ -15,7 +15,7 @@ const overlay = document.createElement("div");
 overlay.classList.add("overlay");
 overlay.classList.add("visible");
 
-let activePage = "PROJECTS";
+let activePage = "HOME";
 
 const data = { todos: new ToDoList(), projects: new ProjectList() };
 
