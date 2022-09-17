@@ -6,6 +6,17 @@ import getTextWidth from "./canvas_methods";
 
 const domParser = new DOMParser();
 export default class Todo {
+	/**
+	 * Constructor for the todo
+	 * @param {String} id id of the todo
+	 * @param {String} title title of the todo
+	 * @param {String} description description of the todo
+	 * @param {Date} created date of the todo creation date
+	 * @param {Date} dueDate date of the todo due date
+	 * @param {Number} priority priority of the todo
+	 * @param {String} note note of the todo
+	 * @param {Boolean} status status of the todo
+	 */
 	constructor(
 		id,
 		title,
@@ -26,6 +37,9 @@ export default class Todo {
 		this._status = status;
 	}
 
+	/**
+	 * @returns {HTMLElement} HTML Element containing the details of the todo
+	 */
 	get detailsHTML() {
 		const detailsDiv = document.createElement("div");
 		detailsDiv.classList.add("todo-details");
@@ -249,6 +263,9 @@ export default class Todo {
 		return detailsDiv;
 	}
 
+	/**
+	 * @returns {HTMlElement} HTML Element holding the todo information
+	 */
 	get displayHTML() {
 		const todoPriorityColors = {
 			1: "#fa4a4a",
