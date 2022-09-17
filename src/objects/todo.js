@@ -207,6 +207,7 @@ export default class Todo {
 		todoStatusHolder.appendChild(todoStatus);
 
 		const todoStatusUpdateButton = document.createElement("button");
+		todoStatusUpdateButton.disabled = true;
 		todoStatusUpdateButton.textContent = "Update Status";
 		todoStatusUpdateButton.classList.add("todo-status-button");
 		todoStatusUpdateButton.style.opacity = "0";

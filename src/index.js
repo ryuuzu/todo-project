@@ -345,5 +345,3 @@ document.querySelector(".nav-link.projects").addEventListener("click", (e) => {
 	activePage = "PROJECTS";
 	updateDOM();
 });
-
-addDetailsPage("td-1", "pj-1");

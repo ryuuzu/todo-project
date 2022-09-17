@@ -23,10 +23,53 @@ export default class ProjectList {
 	 * @returns {HTMLElement} HTML Div element containing the Todo Details
 	 */
 	getTodoDetails(projectID, todoID) {
-		const todoHTML = this.getProject(projectID).getTodo(todoID).detailsHTML;
+		const mainProject = this.getProject(projectID);
+		const todoHTML = mainProject.getTodo(todoID).detailsHTML;
+		todoHTML.classList.add("project");
 
-		todoHTML.setAttribute("project_id", this._projectID);
+		const otherTodoDetails = todoHTML.querySelector(".todo-other-details");
+
+		const parentProjectHolder = document.createElement("div");
+		const parentProjectLabel = document.createElement("label");
+		parentProjectLabel.textContent = "Parent Project";
+		parentProjectLabel.setAttribute("for", "parentProject");
+		parentProjectHolder.appendChild(parentProjectLabel);
+
+		const parentProject = document.createElement("select");
+		parentProject.disabled = true;
+		parentProject.classList.add("todo-details-parent-project");
+		parentProject.name = "parentProject";
+		parentProject.setAttribute("id", "parentProject");
+
+		this.projects.forEach((project) => {
+			const projectOption = document.createElement("option");
+
+			projectOption.textContent = project.name;
+			projectOption.value = project.id;
+			projectOption.selected = mainProject.id === project.id;
+			parentProject.appendChild(projectOption);
+		});
+
+		parentProjectHolder.appendChild(parentProject);
+
+		otherTodoDetails.appendChild(parentProjectHolder);
+
+		todoHTML.setAttribute("project_id", mainProject.id);
 		console.log(todoHTML);
+
+		const EDITABLES = [parentProject];
+
+		todoHTML
+			.querySelector(".edit-button")
+			.addEventListener("click", (e) => {
+				EDITABLES.forEach((element) => (element.disabled = false));
+			});
+
+		todoHTML
+			.querySelector(".save-button")
+			.addEventListener("click", (e) => {
+				EDITABLES.forEach((element) => (element.disabled = true));
+			});
 
 		return todoHTML;
 	}

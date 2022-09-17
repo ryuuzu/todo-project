@@ -118,6 +118,14 @@
 	z-index: 2;
 }
 
+.todo-details.project {
+	top: calc(50% - 30px - 30vh);
+}
+
+.todo-details.project .todo-main-details {
+	height: 60vh;
+}
+
 .details-titlebar {
 	display: flex;
 	padding: 20px 40px;
@@ -209,12 +217,21 @@
 	margin-top: 20px;
 	display: grid;
 	grid-template-columns: 5fr 2fr;
-	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-rows: repeat(3, 1fr);
 	gap: 20px;
 	grid-template-areas:
 		"description duedate"
 		"description priority"
 		"note status";
+}
+
+.todo-details.project .todo-other-details {
+	grid-template-rows: repeat(4, 1fr);
+	grid-template-areas:
+		"description duedate"
+		"description priority"
+		"note status"
+		"note parent-project";
 }
 
 .todo-other-details > div {
@@ -257,6 +274,10 @@
 	grid-area: status;
 }
 
+.todo-other-details > div:nth-child(6) {
+	grid-area: parent-project;
+}
+
 .todo-details-duedate {
 	font-family: inherit;
 	color: inherit;
@@ -271,7 +292,8 @@
 	opacity: 1;
 }
 
-.todo-details-priority {
+.todo-details-priority,
+.todo-details-parent-project {
 	font-family: inherit;
 	font-size: 18px;
 	color: inherit;
@@ -281,7 +303,8 @@
 	padding: 2px 5px;
 }
 
-.todo-details-priority:disabled {
+.todo-details-priority:disabled,
+.todo-details-parent-project:disabled {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	text-indent: 1px;
