@@ -180,6 +180,18 @@ function addProjectEventListeners() {
 		});
 	});
 
+	const todoDetailsButtons = document.querySelectorAll(
+		"#todo-details-button"
+	);
+	todoDetailsButtons.forEach((todoDetailsButton) => {
+		todoDetailsButton.addEventListener("click", (e) => {
+			const todoContainer = todoDetailsButton.parentElement.parentElement;
+			const todoID = todoContainer.id;
+			const projectID = todoContainer.parentElement.parentElement.id;
+			addDetailsPage(todoID, projectID);
+		});
+	});
+
 	const todoDeleteButtons = document.querySelectorAll("#todo-delete-button");
 	todoDeleteButtons.forEach((todoDeleteButton) => {
 		todoDeleteButton.addEventListener("click", (e) => {
@@ -269,9 +281,16 @@ contentDiv.appendChild(getMain());
 contentDiv.appendChild(getFooter());
 updateDOM(data.todos);
 
-function addDetailsPage(todoID) {
-	document.body.appendChild(overlay);
-	document.body.appendChild(data.todos.getTodo(todoID).detailsHTML);
+function addDetailsPage(todoID, projectID = undefined) {
+	if (projectID === undefined) {
+		document.body.appendChild(overlay);
+		document.body.appendChild(data.todos.getTodo(todoID).detailsHTML);
+	} else {
+		document.body.appendChild(overlay);
+		document.body.appendChild(
+			data.projects.getTodoDetails(projectID, todoID)
+		);
+	}
 	addDetailsEventListener();
 }
 
@@ -326,3 +345,5 @@ document.querySelector(".nav-link.projects").addEventListener("click", (e) => {
 	activePage = "PROJECTS";
 	updateDOM();
 });
+
+addDetailsPage("td-1", "pj-1");

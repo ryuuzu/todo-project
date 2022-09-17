@@ -8,6 +8,11 @@ export default class Project extends ToDoList {
 		this._name = name;
 	}
 
+	/**
+	 * Returns Project Holder to display the project on.
+	 *
+	 * @returns {HTMLElement} Project Holder with its Todos
+	 */
 	get displayHTML() {
 		const projectDiv = document.createElement("div");
 		projectDiv.setAttribute("id", this._projectID);
@@ -15,7 +20,6 @@ export default class Project extends ToDoList {
 
 		const projectHeader = document.createElement("div");
 		projectHeader.classList.add("project-header");
-
 
 		const projectTitle = document.createElement("span");
 		projectTitle.textContent = this._name;
