@@ -41,10 +41,16 @@ export default class Project extends ToDoList {
 		return projectDiv;
 	}
 
+	/**
+	 * @returns {String} id of the project
+	 */
 	get id() {
 		return this._projectID;
 	}
 
+	/**
+	 * @returns {String} name of the project
+	 */
 	get name() {
 		return this._name;
 	}
