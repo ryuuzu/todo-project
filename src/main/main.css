@@ -16,3 +16,23 @@ main::-webkit-scrollbar-thumb {
 	border-radius: 28px;
 	outline: 1px solid slategrey;
 }
+
+.add-button {
+	display: flex;
+	z-index: 2;
+	align-items: center;
+	position: sticky;
+	background-color: var(--primary-color);
+	padding: 10px;
+	width: fit-content;
+	height: fit-content;
+	border-radius: 9999px;
+	top: 85%;
+	left: 93%;
+	transition: 300ms ease-in-out;
+	cursor: pointer;
+}
+
+.add-button:hover {
+	background-color: var(--accent-color);
+}

@@ -14,6 +14,10 @@ export default class ProjectList {
 		this._projects.push(project);
 	}
 
+	removeProject(projectID) {
+		this._projects.splice(this.#getProjectIndex(projectID), 1);
+	}
+
 	updateProjectTodo(projectID, todoID) {
 		this._projects[this.#getProjectIndex(projectID)].updateTodoStatus(
 			todoID
@@ -22,6 +26,9 @@ export default class ProjectList {
 
 	removeProjectTodo(projectID, todoID) {
 		this._projects[this.#getProjectIndex(projectID)].removeTodo(todoID);
+		if (this.getProject(projectID).todos.length <= 0) {
+			this.removeProject(projectID);
+		}
 	}
 
 	getProjectTodo(projectID, todoID) {

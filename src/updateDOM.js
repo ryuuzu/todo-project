@@ -1,7 +1,6 @@
 function getTodosHTMl(todos) {
 	const todosHolder = document.createElement("div");
 	todosHolder.classList.add("todos-holder");
-
 	todos.forEach((todo) => {
 		todosHolder.appendChild(todo.displayHTML);
 	});
