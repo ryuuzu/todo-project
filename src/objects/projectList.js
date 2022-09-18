@@ -16,6 +16,86 @@ export default class ProjectList {
 	}
 
 	/**
+	 * @returns {String} new id for todo that is not in the list.
+	 */
+	get newID() {
+		const int_ids = this._projects.map((todo) =>
+			parseInt(todo.id.split("-")[1])
+		);
+
+		int_ids.sort((a, b) => a - b);
+
+		// finding if any number is missing
+		var missing = undefined;
+
+		if (int_ids.length === 0) {
+			missing = 1;
+		} else {
+			for (let index = 0; index < int_ids.length; index++) {
+				if (index + 1 !== int_ids[index]) {
+					missing = index + 1;
+					break;
+				}
+			}
+
+			if (missing === undefined) {
+				missing = int_ids[int_ids.length - 1] + 1;
+			}
+		}
+
+		return `pj-${missing}`;
+	}
+
+	/**
+	 * Updates the todo according to the data passed
+	 * @param {String} todoID id of the todo to be updates
+	 * @param {String} title new title of the todo
+	 * @param {String} description new description of the todo
+	 * @param {Date} dueDate new due date of the todo
+	 * @param {Number} priority new priority for the todo
+	 * @param {String} note new note of the todo
+	 * @param {Boolean} status updated status of the todo.
+	 * @param {String} projectID old project id to the todo
+	 * @param {String} newProjectID new project id of the todo
+	 */
+	updateProjectTodo(
+		todoID,
+		title,
+		description,
+		creationDate,
+		dueDate,
+		priority,
+		note,
+		status,
+		projectID,
+		newProjectID = undefined
+	) {
+		if (newProjectID === undefined || projectID === newProjectID) {
+			this._projects[this.#getProjectIndex(projectID)].updateTodo(
+				todoID,
+				title,
+				description,
+				dueDate,
+				priority,
+				note,
+				status
+			);
+		} else {
+			this.removeProjectTodo(projectID, todoID);
+			this.addProjectTodo(
+				newProjectID,
+				title,
+				description,
+				creationDate,
+				dueDate,
+				priority,
+				note,
+				status
+			);
+		}
+	}
+
+	/**
 	 * Method to get Todo Details to add to the page
 	 *
 	 * @param {String} projectID ID of the project that has the todo
@@ -94,11 +174,44 @@ export default class ProjectList {
 	}
 
 	/**
+	 * Updates the todo according to the data passed
+	 * @param {String} projectID id of the project to update todo of
+	 * @param {String} title title of the todo
+	 * @param {String} description description of the todo
+	 * @param {Date} created created date of the todo
+	 * @param {Date} dueDate due date of the todo
+	 * @param {Number} priority priority for the todo
+	 * @param {String} note note of the todo
+	 * @param {Boolean} status updated status of the todo.
+	 */
+
+	addProjectTodo(
+		projectID,
+		title,
+		description,
+		created,
+		dueDate,
+		priority,
+		note,
+		status
+	) {
+		this._projects[this.#getProjectIndex(projectID)].addTodo(
+			title,
+			description,
+			created,
+			dueDate,
+			priority,
+			note,
+			status
+		);
+	}
+
+	/**
 	 *
 	 * @param {String} projectID id of the project to update the todo of
 	 * @param {String} todoID id of the todo to be updated
 	 */
-	updateProjectTodo(projectID, todoID) {
+	updateProjectTodoStatus(projectID, todoID) {
 		this._projects[this.#getProjectIndex(projectID)].updateTodoStatus(
 			todoID
 		);

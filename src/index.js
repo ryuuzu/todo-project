@@ -20,124 +20,97 @@ let activePage = "PROJECTS";
 const data = { todos: new ToDoList(), projects: new ProjectList() };
 
 data.todos.addTodo(
-	new Todo(
-		"td-1",
-		"Learn React",
-		"Learn React from the LinkedIn Learning Page",
-		new Date(),
-		new Date("2022-09-8"),
-		2,
-		"Links: https://linkedinlearning.com",
-		false
-	)
+	"Learn React",
+	"Learn React from the LinkedIn Learning Page",
+	new Date(),
+	new Date("2022-09-8"),
+	2,
+	"Links: https://linkedinlearning.com",
+	false
 );
 
 data.todos.addTodo(
-	new Todo(
-		"td-2",
-		"Go Shopping",
-		"Need new clothes for the summer",
-		new Date(),
-		new Date("2022-10-20"),
-		1,
-		"Solos Nepal has great windshielders",
-		false
-	)
+	"Go Shopping",
+	"Need new clothes for the summer",
+	new Date(),
+	new Date("2022-10-20"),
+	1,
+	"Solos Nepal has great windshielders",
+	false
 );
 
 data.todos.addTodo(
-	new Todo(
-		"td-3",
-		"Get Money",
-		"Withdraw money from the ATM",
-		new Date(),
-		new Date("2023-09-01"),
-		1,
-		"Money is in the Nabil account",
-		true
-	)
+	"Get Money",
+	"Withdraw money from the ATM",
+	new Date(),
+	new Date("2023-09-01"),
+	1,
+	"Money is in the Nabil account",
+	true
 );
 
-const project = new Project("pj-1", "The Odin Project");
+const project = new Project("pj-2", "The Odin Project");
 
 project.addTodo(
-	new Todo(
-		"td-1",
-		"Learn React",
-		"Learn React from the LinkedIn Learning Page",
-		new Date(),
-		new Date("2022-09-8"),
-		2,
-		"Links: https://linkedinlearning.com",
-		false
-	)
+	"Learn React",
+	"Learn React from the LinkedIn Learning Page",
+	new Date(),
+	new Date("2022-09-8"),
+	2,
+	"Links: https://linkedinlearning.com",
+	false
 );
 
 project.addTodo(
-	new Todo(
-		"td-2",
-		"Go Shopping",
-		"Need new clothes for the summer",
-		new Date(),
-		new Date("2022-10-20"),
-		1,
-		"Solos Nepal has great windshielders",
-		false
-	)
+	"Go Shopping",
+	"Need new clothes for the summer",
+	new Date(),
+	new Date("2022-10-20"),
+	1,
+	"Solos Nepal has great windshielders",
+	false
 );
 
 project.addTodo(
-	new Todo(
-		"td-3",
-		"Get Money",
-		"Withdraw money from the ATM",
-		new Date(),
-		new Date("2023-09-01"),
-		1,
-		"Money is in the Nabil account",
-		true
-	)
+	"Get Money",
+	"Withdraw money from the ATM",
+	new Date(),
+	new Date("2023-09-01"),
+	1,
+	"Money is in the Nabil account",
+	true
 );
 
-const project2 = new Project("pj-2", "The Odin Project2");
+const project2 = new Project("pj-3", "The Odin Project2");
 
 project2.addTodo(
-	new Todo(
-		"td-1",
-		"Learn React",
-		"Learn React from the LinkedIn Learning Page",
-		new Date(),
-		new Date("2022-09-8"),
-		2,
-		"Links: https://linkedinlearning.com",
-		false
-	)
+	"Learn React",
+	"Learn React from the LinkedIn Learning Page",
+	new Date(),
+	new Date("2022-09-8"),
+	2,
+	"Links: https://linkedinlearning.com",
+	false
 );
 
 project2.addTodo(
-	new Todo(
-		"td-2",
-		"Go Shopping",
-		"Need new clothes for the summer",
-		new Date(),
-		new Date("2022-10-20"),
-		1,
-		"Solos Nepal has great windshielders",
-		false
-	)
+	"Go Shopping",
+	"Need new clothes for the summer",
+	new Date(),
+	new Date("2022-10-20"),
+	1,
+	"Solos Nepal has great windshielders",
+	false
 );
 
 project2.addTodo(
-	new Todo(
-		"td-3",
-		"Get Money",
-		"Withdraw money from the ATM",
-		new Date(),
-		new Date("2023-09-01"),
-		1,
-		"Money is in the Nabil account",
-		true
-	)
+	"Get Money",
+	"Withdraw money from the ATM",
+	new Date(),
+	new Date("2023-09-01"),
+	1,
+	"Money is in the Nabil account",
+	true
 );
 
 data.projects.addProject(project);
@@ -175,7 +148,7 @@ function addProjectEventListeners() {
 		const projectContainer = todoContainer.parentElement.parentElement;
 		const projectID = projectContainer.id;
 		todoTitle.addEventListener("click", (e) => {
-			data.projects.updateProjectTodo(projectID, todoID);
+			data.projects.updateProjectTodoStatus(projectID, todoID);
 			checkCompletedProjectTodos();
 		});
 	});
@@ -319,15 +292,36 @@ function addDetailsEventListener() {
 		const statusValue =
 			todoDetails.querySelector("#status").getAttribute("value") ===
 			"true";
-		data.todos.updateTodo(
-			todoID,
-			titleValue,
-			descriptionValue,
-			dueDateValue,
-			priorityValue,
-			noteValue,
-			statusValue
-		);
+		if (activePage === "PROJECTS") {
+			const parentProjectValue =
+				todoDetails.querySelector("#parentProject").value;
+			const parentProjectID = todoDetails.getAttribute("project_id");
+			const creationDate = new Date(
+				todoDetails.querySelector(".creation-date").textContent
+			);
+			data.projects.updateProjectTodo(
+				todoID,
+				titleValue,
+				descriptionValue,
+				creationDate,
+				dueDateValue,
+				priorityValue,
+				noteValue,
+				statusValue,
+				parentProjectID,
+				parentProjectValue
+			);
+		} else {
+			data.todos.updateTodo(
+				todoID,
+				titleValue,
+				descriptionValue,
+				dueDateValue,
+				priorityValue,
+				noteValue,
+				statusValue
+			);
+		}
 	});
 }
 

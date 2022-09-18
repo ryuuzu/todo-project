@@ -13,14 +13,52 @@ export default class ToDoList {
 	}
 
 	/**
+	 * @returns {String} new id for todo that is not in the list.
+	 */
+	get newID() {
+		const int_ids = this._todos.map((todo) =>
+			parseInt(todo.id.split("-")[1])
+		);
+
+		int_ids.sort((a, b) => a - b);
+
+		// finding if any number is missing
+		var missing = undefined;
+
+		if (int_ids.length === 0) {
+			missing = 1;
+		} else {
+			for (let index = 0; index < int_ids.length; index++) {
+				if (index + 1 !== int_ids[index]) {
+					missing = index + 1;
+					break;
+				}
+			}
+
+			if (missing === undefined) {
+				missing = int_ids[int_ids.length - 1] + 1;
+			}
+		}
+
+		return `td-${missing}`;
+	}
+
+	/**
 	 * Adds the todo passed into the list
 	 * @param {Todo} todo todo to be added to the list
 	 */
-	addTodo(todo) {
-		if (this.getTodo(todo.id) !== undefined) {
-			return alert("Duplicate Todo detected.");
-		}
-		this._todos.push(todo);
+	addTodo(title, description, created, dueDate, priority, note, status) {
+		const newTodo = new Todo(
+			this.newID,
+			title,
+			description,
+			created,
+			dueDate,
+			priority,
+			note,
+			status
+		);
+		this._todos.push(newTodo);
 	}
 
 	/**
