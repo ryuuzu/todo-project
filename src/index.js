@@ -1,13 +1,17 @@
 import "./index.css";
 import "./todo.css";
-import Todo from "./objects/todo";
 import getMain from "./main/main";
-import { getTodosHTMl, getProjectsHTML } from "./updateDOM";
 import getHeader from "./header/header";
 import getFooter from "./footer/footer";
+import Project from "./objects/project";
 import ToDoList from "./objects/todoList";
 import ProjectList from "./objects/projectList";
-import Project from "./objects/project";
+import { getTodosHTMl, getProjectsHTML } from "./updateDOM";
+import {
+	storageAvailable,
+	getTodoObject,
+	getProjectObject,
+} from "./storage_methods";
 
 const contentDiv = document.querySelector(".root-content");
 
@@ -18,103 +22,6 @@ overlay.classList.add("visible");
 let activePage = "PROJECTS";
 
 const data = { todos: new ToDoList(), projects: new ProjectList() };
-
-data.todos.addTodo(
-	"Learn React",
-	"Learn React from the LinkedIn Learning Page",
-	new Date(),
-	new Date("2022-09-8"),
-	2,
-	"Links: https://linkedinlearning.com",
-	false
-);
-
-data.todos.addTodo(
-	"Go Shopping",
-	"Need new clothes for the summer",
-	new Date(),
-	new Date("2022-10-20"),
-	1,
-	"Solos Nepal has great windshielders",
-	false
-);
-
-data.todos.addTodo(
-	"Get Money",
-	"Withdraw money from the ATM",
-	new Date(),
-	new Date("2023-09-01"),
-	1,
-	"Money is in the Nabil account",
-	true
-);
-
-const project = new Project("pj-2", "The Odin Project");
-
-project.addTodo(
-	"Learn React",
-	"Learn React from the LinkedIn Learning Page",
-	new Date(),
-	new Date("2022-09-8"),
-	2,
-	"Links: https://linkedinlearning.com",
-	false
-);
-
-project.addTodo(
-	"Go Shopping",
-	"Need new clothes for the summer",
-	new Date(),
-	new Date("2022-10-20"),
-	1,
-	"Solos Nepal has great windshielders",
-	false
-);
-
-project.addTodo(
-	"Get Money",
-	"Withdraw money from the ATM",
-	new Date(),
-	new Date("2023-09-01"),
-	1,
-	"Money is in the Nabil account",
-	true
-);
-
-const project2 = new Project("pj-3", "The Odin Project2");
-
-project2.addTodo(
-	"Learn React",
-	"Learn React from the LinkedIn Learning Page",
-	new Date(),
-	new Date("2022-09-8"),
-	2,
-	"Links: https://linkedinlearning.com",
-	false
-);
-
-project2.addTodo(
-	"Go Shopping",
-	"Need new clothes for the summer",
-	new Date(),
-	new Date("2022-10-20"),
-	1,
-	"Solos Nepal has great windshielders",
-	false
-);
-
-project2.addTodo(
-	"Get Money",
-	"Withdraw money from the ATM",
-	new Date(),
-	new Date("2023-09-01"),
-	1,
-	"Money is in the Nabil account",
-	true
-);
-
-data.projects.addProject(project);
-data.projects.addProject(project2);
 
 function updateDOM() {
 	const main = document.querySelector("main");
@@ -138,6 +45,9 @@ function updateDOM() {
 		addProjectEventListeners();
 		checkCompletedProjectTodos();
 	}
+	if (storageAvailable("localStorage")) {
+		saveData();
+	}
 }
 
 function addProjectEventListeners() {
@@ -150,6 +60,7 @@ function addProjectEventListeners() {
 		todoTitle.addEventListener("click", (e) => {
 			data.projects.updateProjectTodoStatus(projectID, todoID);
 			checkCompletedProjectTodos();
+			saveData();
 		});
 	});
 
@@ -187,6 +98,7 @@ function addTodoEventListeners() {
 		todoTitle.addEventListener("click", (e) => {
 			data.todos.updateTodoStatus(todoID);
 			checkCompletedTodos();
+			saveData();
 		});
 	});
 
@@ -249,9 +161,29 @@ function checkCompletedTodos() {
 	});
 }
 
+function saveData() {
+	localStorage.setItem("todos", JSON.stringify(data.todos.json));
+	localStorage.setItem("projects", JSON.stringify(data.projects.json));
+}
+
+function loadData() {
+	const todos = JSON.parse(localStorage.getItem("todos"))["todos"];
+	const projects = JSON.parse(localStorage.getItem("projects"))["projects"];
+
+	todos.forEach((todo) => {
+		data.todos.forceAddTodo(getTodoObject(todo));
+	});
+	projects.forEach((project) => {
+		data.projects.forceAddProject(getProjectObject(project));
+	});
+}
+
 contentDiv.appendChild(getHeader());
 contentDiv.appendChild(getMain());
 contentDiv.appendChild(getFooter());
+if (storageAvailable("localStorage")) {
+	loadData();
+}
 updateDOM(data.todos);
 
 function addDetailsPage(todoID, projectID = undefined) {
