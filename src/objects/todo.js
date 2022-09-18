@@ -37,6 +37,19 @@ export default class Todo {
 		this._status = status;
 	}
 
+	get json() {
+		return {
+			id: this._id,
+			title: this._title,
+			description: this._description,
+			created: this._created,
+			dueDate: this._dueDate,
+			priority: this._priority,
+			note: this._note,
+			status: this._status,
+		};
+	}
+
 	/**
 	 * @returns {HTMLElement} HTML Element containing the details of the todo
 	 */

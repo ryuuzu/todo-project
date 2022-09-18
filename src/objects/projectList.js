@@ -6,6 +6,12 @@ export default class ProjectList {
 		this._projects = [];
 	}
 
+	get json() {
+		return {
+			projects: this._projects.map((project) => project.json)
+		}
+	}
+
 	/**
 	 * Property containing the list of projects
 	 *
@@ -158,7 +164,7 @@ export default class ProjectList {
 	 * Adds the passed project to the projects list.
 	 * @param {Project} project project to be added to the list
 	 */
-	addProject(project) {
+	forceAddProject(project) {
 		if (this.getProject(project.id) !== undefined) {
 			return alert("Duplicate Project detected.");
 		}
