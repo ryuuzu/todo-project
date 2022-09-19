@@ -119,22 +119,52 @@ data.projects.addProject(project2);
 function updateDOM() {
 	const main = document.querySelector("main");
 	const oldTodosHolder = main.querySelector(".todos-holder");
-	const oldAddButton = main.querySelector(".add-button");
+	const oldAddButton = main.querySelector("#add-button");
+	const oldAddNoteButton = main.querySelector(".add-note-button");
+	const oldAddProjectButton = main.querySelector(".add-project-button");
 	main.removeChild(oldTodosHolder);
-	main.removeChild(oldAddButton);
+	if (oldAddButton) {
+		main.removeChild(oldAddButton);
+	}
+	if (oldAddNoteButton) {
+		main.removeChild(oldAddNoteButton);
+	}
+	if (oldAddProjectButton) {
+		main.removeChild(oldAddProjectButton);
+	}
 
 	const addButton = document.createElement("div");
-	addButton.classList.add("add-button");
 	addButton.setAttribute("id", "add-button");
 
 	addButton.innerHTML = `<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg height="32px" id="Layer_1" style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="svg-white"><path d="M28,14H18V4c0-1.104-0.896-2-2-2s-2,0.896-2,2v10H4c-1.104,0-2,0.896-2,2s0.896,2,2,2h10v10c0,1.104,0.896,2,2,2  s2-0.896,2-2V18h10c1.104,0,2-0.896,2-2S29.104,14,28,14z"/></svg>`;
 	main.appendChild(addButton);
 	if (activePage === "HOME") {
-		main.appendChild(getTodosHTMl(data.todos.todos));
+		const todosHolder = getTodosHTMl(data.todos.todos);
+		todosHolder.style.setProperty("--top-margin", "-1rem");
+		main.appendChild(todosHolder);
+		addButton.classList.add("add-button");
 		addTodoEventListeners();
 		checkCompletedTodos();
 	} else if (activePage === "PROJECTS") {
-		main.appendChild(getProjectsHTML(data.projects.projects));
+		const addNoteButton = document.createElement("div");
+		addNoteButton.classList.add("add-note-button");
+
+		addNoteButton.innerHTML = `<?xml version="1.0" ?><!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'><svg enable-background="new 0 0 512 512" height="512px" id="Layer_1" version="1.1" viewBox="0 0 512 512" width="512px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" class="svg-white" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M449.441,393.818V178.852c0-31.555-27.967-57.236-62.365-57.236H369.99v-3.434c0-31.566-27.967-57.236-62.365-57.236  h-23.034H152.586h-27.661c-34.388,0-62.365,25.67-62.365,57.236v214.965c0,31.555,27.978,57.236,62.365,57.236h17.084v3.435  c0,31.565,27.978,57.235,62.366,57.235h27.661h132.005h11.867h11.167C421.474,451.053,449.441,425.384,449.441,393.818z   M364.041,432.318H232.036h-27.661c-23.177,0-41.956-17.237-41.956-38.5v-3.435v-18.736V178.852c0-21.263,18.779-38.5,41.956-38.5  h27.661h117.545h14.46h5.949h17.085c23.177,0,41.956,17.237,41.956,38.5v214.966c0,21.263-18.779,38.5-41.956,38.5h-11.167H364.041z  "/><path d="M197.397,214.935h162.334c4.484,0,8.115-3.632,8.115-8.116s-3.631-8.115-8.115-8.115H197.397  c-4.484,0-8.116,3.631-8.116,8.115S192.913,214.935,197.397,214.935z"/><path d="M223.046,261.967c0,4.484,3.642,8.115,8.126,8.115h152.119c4.484,0,8.126-3.631,8.126-8.115s-3.642-8.127-8.126-8.127  H231.172C226.688,253.84,223.046,257.482,223.046,261.967z"/><path d="M348.083,317.102c0-4.484-3.632-8.116-8.116-8.116h-142.57c-4.484,0-8.116,3.632-8.116,8.116s3.631,8.126,8.116,8.126  h142.57C344.451,325.228,348.083,321.587,348.083,317.102z"/><path d="M391.417,372.249c0-4.484-3.642-8.115-8.126-8.115H249.689c-4.484,0-8.116,3.631-8.116,8.115s3.631,8.116,8.116,8.116  h133.602C387.776,380.365,391.417,376.733,391.417,372.249z"/></svg>`;
+		main.appendChild(addNoteButton);
+
+		const addProjectButton = document.createElement("div");
+		addProjectButton.classList.add("add-project-button");
+
+		addProjectButton.innerHTML = `<?xml version="1.0" ?><svg viewBox="0 0 640 512" xmlns="http://www.w3.org/2000/svg" class="svg-white"><path d="M368 320h-96C245.6 320 224 341.6 224 368v96C224 490.4 245.6 512 272 512h96c26.4 0 48-21.6 48-48v-96C416 341.6 394.4 320 368 320zM591.1 0h-96c-26.4 0-48 21.6-48 48v96c0 26.4 21.6 48 48 48h96c26.4 0 48-21.6 48-48v-96C639.1 21.6 618.4 0 591.1 0zM192 48C192 21.6 170.4 0 144 0h-96C21.6 0 0 21.6 0 48v96C0 170.4 21.6 192 48 192h79.83l73.04 128C212 301 232.4 288 256 288L192 175.5V128h224V64H192V48z"/></svg>`;
+
+		main.appendChild(addProjectButton);
+
+		const todosHolder = getProjectsHTML(data.projects.projects);
+		todosHolder.style.setProperty("--top-margin", "-10rem");
+
+		main.appendChild(todosHolder);
+		addButton.classList.add("add-button-project-view");
+		addButton.classList.add("inactive");
 		addProjectEventListeners();
 		checkCompletedProjectTodos();
 	}
@@ -176,6 +206,17 @@ function addProjectEventListeners() {
 			todoContainer.classList.add("removed");
 			setTimeout(updateDOM, 200);
 		});
+	});
+
+	const addButton = document.querySelector("#add-button");
+	addButton.addEventListener("click", (e) => {
+		addButton.classList.toggle("clicked");
+		addButton.classList.toggle("inactive");
+		const addNoteButton = document.querySelector(".add-note-button");
+		addNoteButton.classList.toggle("unhide");
+
+		const addProjectButton = document.querySelector(".add-project-button");
+		addProjectButton.classList.toggle("unhide");
 	});
 }
 
