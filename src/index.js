@@ -3,7 +3,6 @@ import "./todo.css";
 import getMain from "./main/main";
 import getHeader from "./header/header";
 import getFooter from "./footer/footer";
-import Project from "./objects/project";
 import closeIcon from "./close-icon.png";
 import ToDoList from "./objects/todoList";
 import ProjectList from "./objects/projectList";
@@ -20,7 +19,7 @@ const overlay = document.createElement("div");
 overlay.classList.add("overlay");
 overlay.classList.add("visible");
 
-let activePage = "PROJECTS";
+let activePage = "HOME";
 
 const data = { todos: new ToDoList(), projects: new ProjectList() };
 
@@ -222,15 +221,19 @@ function saveData() {
 }
 
 function loadData() {
-	const todos = JSON.parse(localStorage.getItem("todos"))["todos"];
-	const projects = JSON.parse(localStorage.getItem("projects"))["projects"];
+	const localTodosData = localStorage.getItem("todos");
+	if (localTodosData) {
+		JSON.parse(localTodosData)["todos"].forEach((todo) => {
+			data.todos.forceAddTodo(getTodoObject(todo));
+		});
+	}
 
-	todos.forEach((todo) => {
-		data.todos.forceAddTodo(getTodoObject(todo));
-	});
-	projects.forEach((project) => {
-		data.projects.forceAddProject(getProjectObject(project));
-	});
+	const localProjectsData = localStorage.getItem("projects");
+	if (localProjectsData) {
+		JSON.parse(localProjectsData)["projects"].forEach((project) => {
+			data.projects.forceAddProject(getProjectObject(project));
+		});
+	}
 }
 
 contentDiv.appendChild(getHeader());
