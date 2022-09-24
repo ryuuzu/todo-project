@@ -17,7 +17,10 @@ main::-webkit-scrollbar-thumb {
 	outline: 1px solid slategrey;
 }
 
-.add-button {
+.add-button,
+.add-button-project-view,
+.add-note-button,
+.add-project-button {
 	display: flex;
 	z-index: 2;
 	align-items: center;
@@ -33,6 +36,104 @@ main::-webkit-scrollbar-thumb {
 	cursor: pointer;
 }
 
-.add-button:hover {
+.add-button {
+	--move-left: -8em;
+	--button-text: "Add new Todo";
+}
+
+.add-button-project-view {
+	--move-left: -9em;
+	--button-text: "Click to expand";
+}
+
+.add-note-button {
+	--move-left: -8em;
+	--button-text: "Add new Todo";
+}
+
+.add-project-button {
+	--move-left: -9em;
+	--button-text: "Add new Project";
+}
+
+.add-note-button.unhide {
+	transform: translateY(-150%);
+}
+
+.add-project-button.unhide {
+	transform: translateY(-300%);
+}
+
+.add-note-button,
+.add-project-button {
+	z-index: 1;
+}
+
+.add-note-button svg,
+.add-project-button svg {
+	width: 32px;
+	height: 32px;
+}
+
+.add-button::before,
+.add-button-project-view.inactive::before,
+.add-note-button.unhide::before,
+.add-project-button.unhide::before {
+	content: "";
+	position: absolute;
+}
+
+.add-button:hover::before,
+.add-button-project-view.inactive:hover::before,
+.add-note-button.unhide:hover::before,
+.add-project-button.unhide:hover::before {
+	padding: 15px 10px;
+	border-radius: 10px;
+	animation: 1s 1 normal moveleft;
+	animation-fill-mode: forwards;
+}
+
+@keyframes moveleft {
+	0% {
+		left: 0rem;
+		background-color: rgba(0, 0, 0, 0);
+		color: rgba(0, 0, 0, 0);
+		opacity: 0;
+	}
+	25% {
+		background-color: rgba(0, 0, 0, 0);
+		color: rgba(0, 0, 0, 0);
+	}
+	50% {
+		background-color: var(--accent-color);
+		color: inherit;
+		left: var(--move-left);
+		content: var(--button-text);
+	}
+	100% {
+		content: var(--button-text);
+		left: var(--move-left);
+		background-color: var(--accent-color);
+		color: inherit;
+		opacity: 1;
+	}
+}
+
+.add-button:hover,
+.add-button-project-view:hover,
+.add-note-button.unhide:hover,
+.add-project-button.unhide:hover {
 	background-color: var(--accent-color);
+}
+
+.add-button-project-view.clicked {
+	background-color: var(--accent-color);
+	transform: rotateZ(405deg);
+}
+.add-button-project-view.clicked::before {
+	content: "";
+}
+
+.add-button-project-view.clicked:hover::before {
+	content: "";
 }

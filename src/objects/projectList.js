@@ -141,7 +141,6 @@ export default class ProjectList {
 		otherTodoDetails.appendChild(parentProjectHolder);
 
 		todoHTML.setAttribute("project_id", mainProject.id);
-		console.log(todoHTML);
 
 		const EDITABLES = [parentProject];
 
