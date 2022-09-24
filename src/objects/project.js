@@ -8,6 +8,12 @@ export default class Project extends ToDoList {
 		this._name = name;
 	}
 
+	get json() {
+		const jsonObj = super.json;
+		jsonObj["id"] = this.id;
+		jsonObj["name"] = this.name;
+		return jsonObj;
+	}
 	/**
 	 * Returns Project Holder to display the project on.
 	 *

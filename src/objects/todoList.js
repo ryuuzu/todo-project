@@ -5,6 +5,10 @@ export default class ToDoList {
 		this._todos = [];
 	}
 
+	get json() {
+		return { todos: this._todos.map((todo) => todo.json) };
+	}
+
 	/**
 	 * @returns {Array<Todo>} list of the todos stored
 	 */
@@ -59,6 +63,12 @@ export default class ToDoList {
 			status
 		);
 		this._todos.push(newTodo);
+	}
+
+	forceAddTodo(todo) {
+		if (!this.getTodo(todo.id)) {
+			this._todos.push(todo);
+		}
 	}
 
 	/**
