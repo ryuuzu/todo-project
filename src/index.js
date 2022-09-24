@@ -288,9 +288,9 @@ function insertAddProjectPage() {
 	addProjectInput.type = "text";
 	addProjectInput.required = true;
 
-	const addProjectSubmit = document.createElement("input");
+	const addProjectSubmit = document.createElement("button");
 	addProjectSubmit.classList.add("add-project-submit");
-	addProjectSubmit.value = "Add Project";
+	addProjectSubmit.textContent = "Add Project";
 
 	// event listener for add project submit button
 	addProjectSubmit.addEventListener("click", (e) => {
@@ -636,5 +636,3 @@ document.querySelector(".nav-link.projects").addEventListener("click", (e) => {
 	activePage = "PROJECTS";
 	updateDOM();
 });
-
-insertAddProjectPage();

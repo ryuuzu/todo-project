@@ -8,8 +8,8 @@ export default class ProjectList {
 
 	get json() {
 		return {
-			projects: this._projects.map((project) => project.json)
-		}
+			projects: this._projects.map((project) => project.json),
+		};
 	}
 
 	/**
@@ -168,6 +168,11 @@ export default class ProjectList {
 			return alert("Duplicate Project detected.");
 		}
 		this._projects.push(project);
+	}
+
+	addProject(name) {
+		const project = new Project(this.newID, name);
+		this.forceAddProject(project);
 	}
 
 	/**
