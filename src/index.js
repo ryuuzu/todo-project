@@ -1,13 +1,13 @@
 import "./index.css";
 import "./todo.css";
-import Todo from "./objects/todo";
 import getMain from "./main/main";
-import { getTodosHTMl, getProjectsHTML } from "./updateDOM";
 import getHeader from "./header/header";
 import getFooter from "./footer/footer";
+import Project from "./objects/project";
+import closeIcon from "./close-icon.png";
 import ToDoList from "./objects/todoList";
 import ProjectList from "./objects/projectList";
-import Project from "./objects/project";
+import { getTodosHTMl, getProjectsHTML } from "./updateDOM";
 
 const contentDiv = document.querySelector(".root-content");
 
@@ -231,6 +231,11 @@ function addTodoEventListeners() {
 		});
 	});
 
+	const addNewTodoButton = document.querySelector("#add-button");
+	addNewTodoButton.addEventListener("click", (e) => {
+		insertAddTodoPage();
+	});
+
 	const todoDetailsButtons = document.querySelectorAll(
 		"#todo-details-button"
 	);
@@ -306,6 +311,211 @@ function addDetailsPage(todoID, projectID = undefined) {
 		);
 	}
 	addDetailsEventListener();
+}
+
+function insertAddTodoPage(project = false) {
+	const addTodo = document.createElement("div");
+	addTodo.classList.add("add-todo-page");
+
+	const addTitleBar = document.createElement("div");
+	addTitleBar.classList.add("add-titlebar");
+
+	const addTitle = document.createElement("div");
+	addTitle.classList.add("title");
+	addTitle.textContent = "Add Todo";
+
+	const closeButton = new Image();
+	closeButton.src = closeIcon;
+	closeButton.classList.add("add-page-close-button");
+
+	addTitleBar.appendChild(addTitle);
+	addTitleBar.appendChild(closeButton);
+
+	addTodo.appendChild(addTitleBar);
+
+	const addForm = document.createElement("fieldset");
+	addForm.classList.add("add-form");
+
+	const titleHolder = document.createElement("div");
+	titleHolder.classList.add("add-todo-title-holder");
+
+	const titleLabel = document.createElement("label");
+	titleLabel.for = "title";
+	titleLabel.textContent = "Title";
+	titleLabel.classList.add("add-todo-title-label");
+
+	const title = document.createElement("input");
+	title.id = "title";
+	title.name = "title";
+	title.classList.add("add-todo-title");
+
+	titleHolder.appendChild(titleLabel);
+	titleHolder.appendChild(title);
+
+	const descriptionHolder = document.createElement("div");
+	descriptionHolder.classList.add("add-todo-description-holder");
+
+	const descriptionLabel = document.createElement("label");
+	descriptionLabel.for = "description";
+	descriptionLabel.textContent = "Description";
+	descriptionLabel.classList.add("add-todo-description-label");
+
+	const description = document.createElement("textarea");
+	description.id = "description";
+	description.name = "description";
+	description.classList.add("add-todo-description");
+
+	descriptionHolder.appendChild(descriptionLabel);
+	descriptionHolder.appendChild(description);
+
+	const dueDateHolder = document.createElement("div");
+	dueDateHolder.classList.add("add-todo-due-date-holder");
+
+	const dueDateLabel = document.createElement("label");
+	dueDateLabel.for = "dueDate";
+	dueDateLabel.textContent = "Due Date";
+	dueDateLabel.classList.add("add-todo-due-date-label");
+
+	const dueDate = document.createElement("input");
+	dueDate.type = "date";
+	dueDate.id = "dueDate";
+	dueDate.name = "dueDate";
+	dueDate.classList.add("add-todo-due-date");
+
+	dueDateHolder.appendChild(dueDateLabel);
+	dueDateHolder.appendChild(dueDate);
+
+	const priorityHolder = document.createElement("div");
+	priorityHolder.classList.add("add-todo-priority-holder");
+
+	const priorityLabel = document.createElement("label");
+	priorityLabel.textContent = "Priority";
+	priorityLabel.for = "priority";
+	priorityLabel.classList.add("add-todo-priority-label");
+
+	const priority = document.createElement("input");
+	priority.id = "priority";
+	priority.name = "priority";
+	priority.type = "range";
+	priority.min = "1";
+	priority.max = "3";
+	priority.value = "2";
+	priority.classList.add("add-todo-priority");
+
+	priorityHolder.appendChild(priorityLabel);
+	priorityHolder.appendChild(priority);
+
+	const noteHolder = document.createElement("div");
+	noteHolder.classList.add("add-todo-note-holder");
+
+	const noteLabel = document.createElement("label");
+	noteLabel.textContent = "Note";
+	noteLabel.for = "note";
+	noteLabel.classList.add("add-todo-note-label");
+
+	const note = document.createElement("textarea");
+	note.id = "note";
+	note.name = "note";
+	note.classList.add("add-todo-note");
+
+	noteHolder.appendChild(noteLabel);
+	noteHolder.appendChild(note);
+
+	const statusHolder = document.createElement("div");
+	statusHolder.classList.add("add-todo-status-holder");
+
+	const statusLabel = document.createElement("label");
+	statusLabel.textContent = "Status";
+	statusLabel.for = "status";
+	statusLabel.classList.add("add-todo-status-label");
+
+	// status div element
+	const status = document.createElement("div");
+	status.classList.add("add-todo-status");
+
+	const statusCheckBox = document.createElement("input");
+	statusCheckBox.id = "status";
+	statusCheckBox.name = "status";
+	statusCheckBox.type = "checkbox";
+	statusCheckBox.classList.add("add-todo-status-checkbox");
+	statusCheckBox.addEventListener("change", () => {
+		updateStatusDiv();
+	});
+
+	const statusDiv = document.createElement("div");
+	statusDiv.classList.add("add-todo-status-div");
+	updateStatusDiv();
+
+	function updateStatusDiv() {
+		if (statusCheckBox.checked) {
+			statusDiv.classList.add("completed");
+			statusDiv.textContent = "Completed";
+		} else {
+			statusDiv.classList.remove("completed");
+			statusDiv.textContent = "Incomplete";
+		}
+	}
+
+	status.appendChild(statusCheckBox);
+	status.appendChild(statusDiv);
+
+	statusHolder.appendChild(statusLabel);
+	statusHolder.appendChild(status);
+
+	addForm.appendChild(titleHolder);
+	addForm.appendChild(descriptionHolder);
+	addForm.appendChild(dueDateHolder);
+	addForm.appendChild(noteHolder);
+	addForm.appendChild(priorityHolder);
+	addForm.appendChild(statusHolder);
+
+	addTodo.appendChild(addForm);
+
+	// add todo button
+	const addTodoButton = document.createElement("button");
+	addTodoButton.classList.add("add-todo-button");
+	addTodoButton.textContent = "Add";
+
+	// add click listener to get all values from form using queryselector
+	addTodoButton.addEventListener("click", () => {
+		const title = document.querySelector("#title").value;
+		const description = document.querySelector("#description").value;
+		const created = new Date();
+		const dueDate = new Date(document.querySelector("#dueDate").value);
+		const priority = parseInt(document.querySelector("#priority").value);
+		const note = document.querySelector("#note").value;
+		const status = document.querySelector("#status").checked;
+
+		if (project) {
+			return;
+		} else {
+			data.todos.addTodo(
+				title,
+				description,
+				created,
+				dueDate,
+				priority,
+				note,
+				status
+			);
+		}
+
+		removeTodoPage();
+		updateDOM();
+	});
+
+	addTodo.appendChild(addTodoButton);
+
+	document.body.appendChild(overlay);
+	document.body.appendChild(addTodo);
+}
+
+function removeTodoPage() {
+	const overlay = document.querySelector(".overlay");
+	const addTodo = document.querySelector(".add-todo-page");
+
+	overlay.remove();
+	addTodo.remove();
 }
 
 function addDetailsEventListener() {
