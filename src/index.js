@@ -209,14 +209,18 @@ function addProjectEventListeners() {
 	});
 
 	const addButton = document.querySelector("#add-button");
+	const addNoteButton = document.querySelector(".add-note-button");
+	const addProjectButton = document.querySelector(".add-project-button");
 	addButton.addEventListener("click", (e) => {
 		addButton.classList.toggle("clicked");
 		addButton.classList.toggle("inactive");
-		const addNoteButton = document.querySelector(".add-note-button");
 		addNoteButton.classList.toggle("unhide");
 
-		const addProjectButton = document.querySelector(".add-project-button");
 		addProjectButton.classList.toggle("unhide");
+	});
+
+	addNoteButton.addEventListener("click", (e) => {
+		insertAddTodoPage(true);
 	});
 }
 
@@ -327,6 +331,10 @@ function insertAddTodoPage(project = false) {
 	const closeButton = new Image();
 	closeButton.src = closeIcon;
 	closeButton.classList.add("add-page-close-button");
+
+	closeButton.onclick = () => {
+		removeAddTodoPage();
+	};
 
 	addTitleBar.appendChild(addTitle);
 	addTitleBar.appendChild(closeButton);
@@ -455,7 +463,6 @@ function insertAddTodoPage(project = false) {
 			statusDiv.textContent = "Incomplete";
 		}
 	}
-
 	status.appendChild(statusCheckBox);
 	status.appendChild(statusDiv);
 
@@ -469,38 +476,79 @@ function insertAddTodoPage(project = false) {
 	addForm.appendChild(priorityHolder);
 	addForm.appendChild(statusHolder);
 
+	if (project) {
+		addForm.classList.add("project");
+
+		// project div element
+		const projectHolder = document.createElement("div");
+		projectHolder.classList.add("add-todo-parent-project-holder");
+
+		const projectLabel = document.createElement("label");
+		projectLabel.textContent = "Project";
+		projectLabel.for = "project";
+		projectLabel.classList.add("add-todo-parent-project-label");
+
+		const project = document.createElement("select");
+		project.id = "project";
+		project.name = "project";
+		project.classList.add("add-todo-parent-project");
+
+		// add projects to project select element
+		for (let i = 0; i < data.projects.projects.length; i++) {
+			const option = document.createElement("option");
+			option.value = data.projects.projects[i].id;
+			option.textContent = data.projects.projects[i].name;
+			project.appendChild(option);
+		}
+
+		projectHolder.appendChild(projectLabel);
+		projectHolder.appendChild(project);
+
+		addForm.appendChild(projectHolder);
+	}
+
 	addTodo.appendChild(addForm);
 
-	// add todo button
 	const addTodoButton = document.createElement("button");
 	addTodoButton.classList.add("add-todo-button");
 	addTodoButton.textContent = "Add";
 
-	// add click listener to get all values from form using queryselector
 	addTodoButton.addEventListener("click", () => {
-		const title = document.querySelector("#title").value;
-		const description = document.querySelector("#description").value;
-		const created = new Date();
-		const dueDate = new Date(document.querySelector("#dueDate").value);
-		const priority = parseInt(document.querySelector("#priority").value);
-		const note = document.querySelector("#note").value;
-		const status = document.querySelector("#status").checked;
+		const titleValue = title.value;
+		const descriptionValue = description.value;
+		const createdValue = new Date();
+		const dueDateValue = new Date(dueDate.value);
+		const priorityValue = parseInt(priority.value);
+		const noteValue = note.value;
+		const statusValue = status.checked;
 
 		if (project) {
-			return;
+			const parentProjectValue = document.querySelector(
+				".add-todo-parent-project"
+			).value;
+			data.projects.addProjectTodo(
+				parentProjectValue,
+				titleValue,
+				descriptionValue,
+				createdValue,
+				dueDateValue,
+				priorityValue,
+				noteValue,
+				statusValue
+			);
 		} else {
 			data.todos.addTodo(
-				title,
-				description,
-				created,
-				dueDate,
-				priority,
-				note,
-				status
+				titleValue,
+				descriptionValue,
+				createdValue,
+				dueDateValue,
+				priorityValue,
+				noteValue,
+				statusValue
 			);
 		}
 
-		removeTodoPage();
+		removeAddTodoPage();
 		updateDOM();
 	});
 
@@ -510,7 +558,7 @@ function insertAddTodoPage(project = false) {
 	document.body.appendChild(addTodo);
 }
 
-function removeTodoPage() {
+function removeAddTodoPage() {
 	const overlay = document.querySelector(".overlay");
 	const addTodo = document.querySelector(".add-todo-page");
 

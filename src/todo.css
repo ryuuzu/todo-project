@@ -295,7 +295,8 @@
 }
 
 .todo-details-priority,
-.todo-details-parent-project {
+.todo-details-parent-project,
+.add-todo-parent-project {
 	font-family: inherit;
 	font-size: 18px;
 	color: inherit;
@@ -350,11 +351,11 @@
 /* Start Add Todo page styles */
 .add-todo-page {
 	position: absolute;
-	top: calc(50% - 25vh);
+	top: calc(50% - 30vh);
 	left: calc(50% - 20vw);
 	border-radius: 28px;
 	width: 40vw;
-	height: 50vh;
+	height: 60vh;
 	background-color: var(--light-primary-color);
 	z-index: 70;
 	color: var(--primary-text);
@@ -400,6 +401,14 @@
 		"note status";
 }
 
+.add-form.project {
+	grid-template-areas:
+		"title priority"
+		"description duedate"
+		"description status"
+		"note parent-project";
+}
+
 .add-form > div {
 	display: flex;
 	flex-direction: column;
@@ -427,6 +436,10 @@
 
 .add-form > div:nth-child(6) {
 	grid-area: status;
+}
+
+.add-form > div:nth-child(7) {
+	grid-area: parent-project;
 }
 
 .add-form textarea {
