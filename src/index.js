@@ -222,6 +222,10 @@ function addProjectEventListeners() {
 	addNoteButton.addEventListener("click", (e) => {
 		insertAddTodoPage(true);
 	});
+
+	addProjectButton.addEventListener("click", (e) => {
+		insertAddProjectPage();
+	});
 }
 
 function addTodoEventListeners() {
@@ -317,6 +321,61 @@ function addDetailsPage(todoID, projectID = undefined) {
 	addDetailsEventListener();
 }
 
+// function to insert add project page
+function insertAddProjectPage() {
+	const addProject = document.createElement("div");
+	addProject.classList.add("add-project-page");
+
+	const addTitleBar = document.createElement("div");
+	addTitleBar.classList.add("add-titlebar");
+
+	const addTitle = document.createElement("div");
+	addTitle.classList.add("title");
+	addTitle.textContent = "Add Project";
+
+	const closeButton = new Image();
+	closeButton.src = closeIcon;
+	closeButton.classList.add("add-page-close-button");
+
+	closeButton.onclick = () => {
+		removeAddPage();
+	};
+
+	addTitleBar.appendChild(addTitle);
+	addTitleBar.appendChild(closeButton);
+
+	addProject.appendChild(addTitleBar);
+
+	const addProjectForm = document.createElement("div");
+	addProjectForm.classList.add("add-project-form");
+
+	const addProjectInput = document.createElement("input");
+	addProjectInput.classList.add("add-project-input");
+	addProjectInput.placeholder = "Project Name";
+	addProjectInput.type = "text";
+	addProjectInput.required = true;
+
+	const addProjectSubmit = document.createElement("input");
+	addProjectSubmit.classList.add("add-project-submit");
+	addProjectSubmit.value = "Add Project";
+
+	// event listener for add project submit button
+	addProjectSubmit.addEventListener("click", (e) => {
+		const projectName = addProjectInput.value;
+		data.projects.addProject(projectName);
+		removeAddPage();
+		updateDOM();
+	});
+
+	addProjectForm.appendChild(addProjectInput);
+	addProjectForm.appendChild(addProjectSubmit);
+
+	addProject.appendChild(addProjectForm);
+
+	document.body.appendChild(overlay);
+	document.body.appendChild(addProject);
+}
+
 function insertAddTodoPage(project = false) {
 	const addTodo = document.createElement("div");
 	addTodo.classList.add("add-todo-page");
@@ -333,7 +392,7 @@ function insertAddTodoPage(project = false) {
 	closeButton.classList.add("add-page-close-button");
 
 	closeButton.onclick = () => {
-		removeAddTodoPage();
+		removeAddPage();
 	};
 
 	addTitleBar.appendChild(addTitle);
@@ -548,7 +607,7 @@ function insertAddTodoPage(project = false) {
 			);
 		}
 
-		removeAddTodoPage();
+		removeAddPage();
 		updateDOM();
 	});
 
@@ -558,12 +617,18 @@ function insertAddTodoPage(project = false) {
 	document.body.appendChild(addTodo);
 }
 
-function removeAddTodoPage() {
+function removeAddPage() {
 	const overlay = document.querySelector(".overlay");
 	const addTodo = document.querySelector(".add-todo-page");
+	const addProject = document.querySelector(".add-project-page");
 
 	overlay.remove();
-	addTodo.remove();
+	if (addTodo) {
+		addTodo.remove();
+	}
+	if (addProject) {
+		addProject.remove();
+	}
 }
 
 function addDetailsEventListener() {
@@ -638,3 +703,5 @@ document.querySelector(".nav-link.projects").addEventListener("click", (e) => {
 	activePage = "PROJECTS";
 	updateDOM();
 });
+
+insertAddProjectPage();
